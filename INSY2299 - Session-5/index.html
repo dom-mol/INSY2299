@@ -368,6 +368,11 @@ select.pick{border:1px solid #bdb3b7; border-radius:4px; padding:6px 9px; font-s
 .bstep .aside{font-size:15px; color:var(--muted)}
 .bstep.key{border-left:3px solid var(--maroon); padding:4px 0 4px 16px}
 .bstep.key p{font-weight:700; color:var(--ink)}
+.build.big{gap:18px}
+.build.big .bstep h3{font-size:20px; margin-bottom:4px}
+.build.big .bstep p{font-size:19px; line-height:1.45}
+.build.big .bstep .aside{font-size:17px}
+.build.big .bstep.key p{font-size:20px}
 
 /* definition box */
 .defn{border:1px solid var(--line); background:var(--hdr); padding:12px 18px 14px; max-width:900px}
@@ -698,7 +703,7 @@ table.dt{border-collapse:collapse; table-layout:fixed; width:100%; font-size:13p
       <button type="button" class="btn" id="pr-next">Next point</button>
       <span class="small" id="pr-count">1 of 4 shown</span>
     </div>
-    <div class="build" id="pr-build">
+    <div class="build big" id="pr-build">
       <div class="bstep" data-step="1"><h3>Possible pricing strategies:</h3>
         <p>(1) Match competitor, (2) Cost-based, <span class="dim">(3) Measure willingness to pay*</span></p></div>
       <div class="bstep" data-step="2"><h3>We also need to know our business objective:</h3>
