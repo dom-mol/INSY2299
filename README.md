@@ -5,6 +5,7 @@ Each deck is one self-contained HTML file: no build step, no dependencies.
 
     index.html                        landing page, links to each session
     INSY2299 - Session-4/index.html   Session 4 deck
+    INSY2299 - Session-5/index.html   Session 5 deck
 
 ## This repository is public
 
@@ -15,8 +16,8 @@ code on the attendance slide (it ships as `0000`).
 
 ## Publishing an update
 
-Rebuild the deck, copy it over `INSY2299 - Session-4/index.html`, then:
+Rebuild the deck, copy it over `INSY2299 - Session-<N>/index.html`, then:
 
-    git add -A && git commit -m "Session 4: update" && git push
+    git add -A && git commit -m "Session <N>: update" && git push
 
 Pages redeploys in a minute or two.
