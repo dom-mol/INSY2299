@@ -882,7 +882,7 @@ table.dt{border-collapse:collapse; table-layout:fixed; width:100%; font-size:13p
         <div class="dlg-b">
           <div class="lab">Set cell: <span class="ro">E24</span></div>
           <label>To value: <input type="text" id="gs-to" value="50000" inputmode="decimal" autocomplete="off"></label>
-          <label>By changing cell: <select id="gs-by"><option value="B10">$B$10</option><option value="B9">$B$9</option></select></label>
+          <label>By changing cell: <select id="gs-by"><option value="B10">$B$10</option><option value="B9">$B$9</option><option value="B8">$B$8</option><option value="B7">$B$7</option></select></label>
           <div class="dlg-btns"><button type="button" class="btn primary" id="gs-ok">OK</button><button type="button" class="btn" id="gs-reset">Reset</button></div>
           <p class="small" id="gs-status" aria-live="polite" style="margin:4px 0 0; min-height:120px"></p>
         </div>
@@ -1503,23 +1503,24 @@ rcBtns.forEach(b=>b.onclick=()=>ramcSet(b.dataset.rc));
   function E24(inputs){ return RAM.compute({...RAM.consts,...inputs}).E24; }
   function run(){
     if(timer){ clearInterval(timer); timer=null; }
-    const target=parseNum($('#gs-to').value), cell=$('#gs-by').value;
+    const target=parseNum($('#gs-to').value), cell=$('#gs-by').value, isPct=cell!=='B9';
+    const NAME={B7:'Sales Revenue Growth Rate',B8:'CGS Growth Rate',B9:'Marketing Increase',B10:'Admin Growth Rate'};
     if(typeof target!=='number'){ status.textContent='Invalid value: To value must be a number.'; return; }
     const base=g.inputs, f=x=>{ const r=E24({...base,[cell]:x}); return typeof r==='number'?r-target:NaN; };
     // secant iteration, as Goal Seek does, from the current value
-    let x0=typeof base[cell]==='number'?base[cell]:0, x1=x0+(cell==='B10'?0.01:1000), f0=f(x0), f1=f(x1);
+    let x0=typeof base[cell]==='number'?base[cell]:0, x1=x0+(isPct?0.01:1000), f0=f(x0), f1=f(x1);
     const path=[x0];
     for(let k=0;k<100&&Math.abs(f1)>1e-7;k++){ if(f1===f0) break; const x2=x1-f1*(x1-x0)/(f1-f0); x0=x1; f0=f1; x1=x2; f1=f(x1); path.push(x1); }
     const solved=Math.abs(f1)<0.01;
     let k=0; ok.disabled=true; g.select(cell);
-    const show=v=>cell==='B10'?pct(v):usd(v);
+    const show=v=>isPct?(v*100).toFixed(2)+'%':usd(v);
     timer=setInterval(()=>{
       const x=path[Math.min(k,path.length-1)], v=g.setInputs({[cell]:x},true);
       status.innerHTML=`Iteration ${k+1}: ${cell} = <b>${esc(show(x))}</b>, E24 = ${esc(usd(v.E24))}`;
       if(k>=path.length-1){ clearInterval(timer); timer=null; ok.disabled=false;
         const fin=g.values();
         status.innerHTML= solved
-          ? `Goal Seeking with Cell E24 found a solution.<br>Target value: ${esc(num(target))}<br>Current value: ${esc(usd(fin.E24))}<br><br>${cell} ${cell==='B10'?'(Admin Growth Rate)':'(Marketing Increase)'} = <b>${esc(cell==='B10'?(fin.B10*100).toFixed(2)+'%':usd(fin.B9))}</b>${(cell==='B10'?fin.B10:fin.B9)<0?' — negative: the budget has to shrink.':''}`
+          ? `Goal Seeking with Cell E24 found a solution.<br>Target value: ${esc(num(target))}<br>Current value: ${esc(usd(fin.E24))}<br><br>${cell} (${NAME[cell]}) = <b>${esc(show(fin[cell]))}</b>${fin[cell]<0?(cell==='B9'||cell==='B10'?' — negative: the budget has to shrink.':' — negative: it has to fall each year.'):''}`
           : 'Goal Seeking with Cell E24 may not have found a solution.'; }
       k++;
     },260);
