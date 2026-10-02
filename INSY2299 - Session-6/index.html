@@ -686,10 +686,10 @@ table.at{border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-
   <div class="body" style="gap:14px">
     <div class="row" style="justify-content:space-between">
       <p class="small" style="margin:0">Three toy models of what the data does. Illustrative numbers, not company data.</p>
-      <div class="row" style="gap:8px"><button type="button" class="btn primary" id="dd-next">Show example 1</button><button type="button" class="btn" id="dd-reset">Reset</button></div>
+      
     </div>
     <div class="dd3">
-      <div class="ddc pend" data-n="1">
+      <div class="ddc">
         <h3><span>1</span>Personalize services</h3>
         <div class="seg sm" role="group" aria-label="Viewer" id="ps-user">
           <button type="button" data-u="0" aria-pressed="true">Ana</button><button type="button" data-u="1" aria-pressed="false">Ben</button><button type="button" data-u="2" aria-pressed="false">Chloe</button>
@@ -699,7 +699,7 @@ table.at{border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-
         <p class="ddl">Rows on <span id="ps-name">Ana</span>&rsquo;s home screen</p>
         <ol class="home" id="ps-home"></ol>
       </div>
-      <div class="ddc pend" data-n="2">
+      <div class="ddc">
         <h3><span>2</span>Rank ads in the news feed</h3>
         <p class="ddl">One ad slot in the feed. Three advertisers bid per click. Which ad does the viewer see?</p>
         <div class="seg sm" role="group" aria-label="Viewer" id="ad-user">
@@ -709,7 +709,7 @@ table.at{border-collapse:collapse; font-size:13px; font-variant-numeric:tabular-
         <label class="slider" style="font-size:13px; gap:8px">Sneakers bid <input type="range" id="ad-bid" min="1" max="10" step="0.5" value="5" style="width:120px"><output id="ad-bidv">$5.00</output></label>
         <p class="ddr" id="ad-why"></p>
       </div>
-      <div class="ddc pend" data-n="3">
+      <div class="ddc">
         <h3><span>3</span>Optimize operations &amp; supply chains</h3>
         <p class="ddl">How many units should a store stock? Demand is 60&ndash;140 units, equally likely; price $10, cost $4, leftovers are lost.</p>
         <div class="nv" id="op-chart"></div>
@@ -1246,20 +1246,6 @@ function slicesOf(dim){
 
 /* ============ slide 5 · reveal ============ */
 $('#dd-btn').onclick=()=>{ const m=$('#dd-msg'); const on=m.style.visibility!=='visible'; m.style.visibility=on?'visible':'hidden'; };
-/* examples appear one at a time: the button, or → / PageDown / space (a clicker) while some are still hidden */
-(function(){
-  const cards=$$('.dd3 .ddc'), nb=$('#dd-next');
-  let shown=0;
-  function render(){
-    cards.forEach((c,i)=>{ c.classList.toggle('pend',i>=shown); c.inert=i>=shown; });
-    nb.disabled=shown>=cards.length; nb.textContent=shown>=cards.length?'All examples shown':`Show example ${shown+1}`;
-  }
-  function next(){ if(shown>=cards.length) return false; shown++; render(); return true; }
-  nb.onclick=next;
-  $('#dd-reset').onclick=()=>{ shown=0; $('#dd-msg').style.visibility='hidden'; render(); };
-  STEPS['Data and decision making']=next;
-  render();
-})();
 /* (1) personalization: the home screen is ordered by what this viewer watched (illustrative hours) */
 (function(){
   const G=['Documentaries','Comedy','Drama','Sports','Kids & family'];
