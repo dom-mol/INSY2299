@@ -1664,7 +1664,7 @@ $$('.card[data-tools]').forEach(card=>{
 (function(){
   const F={Location:LOCS,Year:YEARS,Product:PRODS}, PL={Location:'Locations',Year:'Years',Product:'Products'};
   const AREAS=[['rows','Rows'],['cols','Columns'],['filter','Filters'],['off','—']];
-  const st={area:{Location:'rows',Product:'cols',Year:'filter'}, inc:{Location:new Set(LOCS),Year:new Set(YEARS),Product:new Set(PRODS)}, agg:'sum', gtRow:true, gtCol:true};
+  const st={area:{Product:'rows',Location:'cols',Year:'filter'}, inc:{Location:new Set(LOCS),Year:new Set(YEARS),Product:new Set(PRODS)}, agg:'sum', gtRow:true, gtCol:true};
   const aggName={sum:'Sum',avg:'Average',count:'Count'};
   const fmt=v=>v==null?'':(Number.isInteger(v)?String(v):v.toFixed(2).replace(/0+$/,'').replace(/\.$/,''));
   function setArea(f,a){
@@ -1729,18 +1729,18 @@ $$('.card[data-tools]').forEach(card=>{
     if(b.classList.contains('chip')){ const f=b.dataset.f, v=f==='Year'?+b.dataset.v:b.dataset.v, s=st.inc[f]; if(s.has(v)){ if(s.size>1) s.delete(v); } else s.add(v); render(); return; }
     if(b.dataset.pa){ segSet(b.parentNode,b); st.agg=b.dataset.pa; table(); minis(); return; }
     if(b.dataset.gt){ const k=b.dataset.gt==='row'?'gtRow':'gtCol'; st[k]=!st[k]; b.setAttribute('aria-pressed',String(st[k])); table(); minis(); return; }
-    if(b.id==='pv-reset'){ st.area={Location:'rows',Product:'cols',Year:'filter'}; st.inc={Location:new Set(LOCS),Year:new Set(YEARS),Product:new Set(PRODS)}; st.agg='sum'; st.gtRow=st.gtCol=true;
+    if(b.id==='pv-reset'){ st.area={Product:'rows',Location:'cols',Year:'filter'}; st.inc={Location:new Set(LOCS),Year:new Set(YEARS),Product:new Set(PRODS)}; st.agg='sum'; st.gtRow=st.gtCol=true;
       $$('#pv-gt button').forEach(x=>x.setAttribute('aria-pressed','true')); segSet($('#pv-agg'),$('#pv-agg [data-pa="sum"]')); render(); return; }
     if(b.id==='pv-swap'){ const rf=Object.keys(F).find(f=>st.area[f]==='rows'), cf=Object.keys(F).find(f=>st.area[f]==='cols'); if(rf) st.area[rf]='cols'; if(cf) st.area[cf]='rows'; render(); return; }
     if(b.dataset.pre){
       const all=()=>{ st.inc={Location:new Set(LOCS),Year:new Set(YEARS),Product:new Set(PRODS)}; };
       all(); let agg='sum';
       const p=b.dataset.pre;
-      if(p==='y14'){ st.area={Location:'rows',Product:'cols',Year:'filter'}; st.inc.Year=new Set([2014]); }
-      if(p==='sum'){ st.area={Location:'rows',Product:'cols',Year:'filter'}; }
-      if(p==='avg'){ st.area={Location:'rows',Product:'cols',Year:'filter'}; agg='avg'; }
+      if(p==='y14'){ st.area={Product:'rows',Location:'cols',Year:'filter'}; st.inc.Year=new Set([2014]); }
+      if(p==='sum'){ st.area={Product:'rows',Location:'cols',Year:'filter'}; }
+      if(p==='avg'){ st.area={Product:'rows',Location:'cols',Year:'filter'}; agg='avg'; }
       if(p==='east'){ st.area={Year:'rows',Product:'cols',Location:'filter'}; st.inc.Location=new Set(['East']); }
-      if(p==='dice'){ st.area={Location:'rows',Product:'cols',Year:'filter'}; st.inc.Location=new Set(['East','West']); st.inc.Product=new Set(['Nuts','Bolts']); st.inc.Year=new Set([2015,2016]); }
+      if(p==='dice'){ st.area={Product:'rows',Location:'cols',Year:'filter'}; st.inc.Location=new Set(['East','West']); st.inc.Product=new Set(['Nuts','Bolts']); st.inc.Year=new Set([2015,2016]); }
       st.agg=agg; segSet($('#pv-agg'),$(`#pv-agg [data-pa="${agg}"]`)); render();
     }
   });
