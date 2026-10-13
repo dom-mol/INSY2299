@@ -7,6 +7,8 @@ Each deck is one self-contained HTML file: no build step, no dependencies.
     INSY2299 - Session-4/index.html   Session 4 deck
     INSY2299 - Session-5/index.html   Session 5 deck
     INSY2299 - Session-6/index.html   Session 6 deck
+    INSY2299 - Session-7/index.html   Session 7 deck
+    INSY2299 - Session-8/index.html   Session 8 deck
 
 ## This repository is public
 
