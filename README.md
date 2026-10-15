@@ -4,6 +4,7 @@ Web versions of the INSY 2299 lecture decks, served by GitHub Pages.
 Each deck is one self-contained HTML file: no build step, no dependencies.
 
     index.html                        landing page, links to each session
+    INSY2299 - Session-2/index.html   Session 2 deck
     INSY2299 - Session-4/index.html   Session 4 deck
     INSY2299 - Session-5/index.html   Session 5 deck
     INSY2299 - Session-6/index.html   Session 6 deck
