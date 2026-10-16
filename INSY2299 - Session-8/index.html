@@ -458,6 +458,16 @@ table.demo{border-collapse:collapse; width:100%; font-size:15px; font-variant-nu
 .mini .chat .in{font-size:12px; padding:7px 10px}
 @media (prefers-reduced-motion: reduce){ .slide,.slide.active,.progress,.msg,.cbar i,.gauge .fill{transition:none} }
 
+/* ---------- wide full screen (canvas widens to the screen's aspect ratio) ---------- */
+:root{--gx:0px}
+html.wide body{margin:0; background:var(--paper)}
+html.wide .stage{padding:0}
+html.wide .frame{box-shadow:none}
+html.wide .barwrap{position:fixed; left:0; right:0; bottom:0; z-index:10; opacity:0; transition:opacity .2s}
+html.wide .barwrap:hover,html.wide .barwrap:focus-within{opacity:1}
+html.wide .slide{padding-left:calc(40px + var(--gx)); padding-right:calc(40px + var(--gx))}
+html.wide .top{margin:0 calc(-1 * var(--gx)); padding-left:var(--gx); padding-right:var(--gx)}
+
 @media (max-width: 760px){
   html,body{height:auto}
   body{overflow:auto}
@@ -1733,12 +1743,17 @@ function go(i,push){
 }
 window.__go=go;
 function fit(){
-  if(narrow.matches){ frame.style.width=''; frame.style.height=''; canvas.style.transform=''; slides.forEach(s=>{s.inert=false; s.removeAttribute('aria-hidden');}); return; }
+  if(narrow.matches){ document.documentElement.classList.remove('wide'); canvas.style.width=''; frame.style.width=''; frame.style.height=''; canvas.style.transform=''; slides.forEach(s=>{s.inert=false; s.removeAttribute('aria-hidden');}); return; }
+  const wide=!!document.fullscreenElement;
+  document.documentElement.classList.toggle('wide',wide);
   const cs=getComputedStyle(stage);
   const w=stage.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
   const h=stage.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
-  const s=Math.max(.2,Math.min(w/1024,h/768));
-  frame.style.width=(1024*s)+'px'; frame.style.height=(768*s)+'px'; canvas.style.transform=`scale(${s})`;
+  // in full screen the canvas widens to the screen's shape (4:3 up to 2:1); content keeps its 944px column
+  const W=wide?Math.round(Math.min(1536,Math.max(1024,768*w/h))):1024;
+  canvas.style.width=W+'px'; document.documentElement.style.setProperty('--gx',((W-1024)/2)+'px');
+  const s=Math.max(.2,Math.min(w/W,h/768));
+  frame.style.width=(W*s)+'px'; frame.style.height=(768*s)+'px'; canvas.style.transform=`scale(${s})`;
   go(cur,false);
 }
 $('#prev').onclick=()=>go(cur-1,true); $('#next').onclick=()=>go(cur+1,true);
@@ -1756,7 +1771,7 @@ document.addEventListener('keydown',e=>{
 });
 const full=$('#full');
 if(document.fullscreenEnabled){ full.hidden=false; full.onclick=()=>{ try{ document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen(); }catch(e){} }; }
-document.addEventListener('fullscreenchange',()=>{ full.textContent=document.fullscreenElement?'Exit full screen':'Full screen'; });
+document.addEventListener('fullscreenchange',()=>{ full.textContent=document.fullscreenElement?'Exit full screen':'Full screen'; fit(); });
 const start=parseInt((location.hash||'').slice(1),10);
 go(Number.isFinite(start)?start-1:0,false);
 window.addEventListener('resize',fit); narrow.addEventListener?.('change',fit);
