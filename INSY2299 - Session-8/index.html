@@ -1145,7 +1145,7 @@ html.wide .top{margin:0 calc(-1 * var(--gx)); padding-left:var(--gx); padding-ri
     <div class="fname">
       <label>Last name <input id="fn-l" autocomplete="family-name" placeholder="Lastname"></label>
       <label>First name <input id="fn-f" autocomplete="given-name" placeholder="Firstname"></label>
-      <span aria-hidden="true">→</span><output id="fn-o" aria-live="polite">Lastname_Firstname_Session8_v2.xlsx</output>
+      <span aria-hidden="true">→</span><output id="fn-o" aria-live="polite">Lastname_Firstname_Session8.xlsx</output>
     </div>
     <p class="small" style="margin:-6px 0 0">Type your name to see the exact file name to upload. Then tick each item before you submit.</p>
     <ul class="tick" id="sub-list">
@@ -1660,7 +1660,7 @@ $$('.tick').forEach(list=>$$('button',list).forEach(b=>b.addEventListener('click
 /* ---------- 21 · file name ---------- */
 (function(){
   const clean=s=>s.trim().replace(/[^A-Za-z\-]/g,'');
-  const f=()=>{ $('#fn-o').textContent=`${clean($('#fn-l').value)||'Lastname'}_${clean($('#fn-f').value)||'Firstname'}_Session8_v2.xlsx`; };
+  const f=()=>{ $('#fn-o').textContent=`${clean($('#fn-l').value)||'Lastname'}_${clean($('#fn-f').value)||'Firstname'}_Session8.xlsx`; };
   $('#fn-l').oninput=f; $('#fn-f').oninput=f;
 })();
 
