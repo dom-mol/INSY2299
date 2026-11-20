@@ -15,6 +15,7 @@ Each deck is one self-contained HTML file.
     INSY2299 - Session-10/index.html  Session 10 deck
     INSY2299 - Session-11/index.html  Session 11 deck
     INSY2299 - Session-12/index.html  Session 12 deck
+    INSY2299 - Session-13/index.html  Session 13 deck
 
 ## Publishing an update
 
